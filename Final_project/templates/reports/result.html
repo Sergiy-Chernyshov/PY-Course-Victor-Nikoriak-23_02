@@ -1,59 +1,66 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Результат обробки</h1>
+<h1>Зведений результат</h1>
 
-<p>Файл: <strong>{{ file_name }}</strong></p>
+<p>Оброблено файл: <strong>{{ file_name }}</strong></p>
+
+<p>
+    <a href="{{ result.download_url }}" class="button">Скачати оброблений Excel</a>
+</p>
+
+{% if result.pdf_url %}
+    <p>
+        <a href="{{ result.pdf_url }}" class="button">Скачати PDF</a>
+    </p>
+{% endif %}
 
 <div class="stats">
-    <div class="stat">
-        Всього рядків
-        <strong>{{ result.totals.rows_total }}</strong>
-    </div>
-
-    <div class="stat">
-        Оброблено
-        <strong>{{ result.totals.rows_used }}</strong>
-    </div>
-
-    <div class="stat">
-        Видалено
-        <strong>{{ result.totals.rows_deleted }}</strong>
-    </div>
-
-    <div class="stat">
-        Кількість ППТ
-        <strong>{{ result.totals.total_count }}</strong>
-    </div>
-
-    <div class="stat">
-        Загальна сума
-        <strong>{{ result.totals.total_sum }}</strong>
-    </div>
+    <div class="stat">Всього рядків<strong>{{ result.totals.rows_total }}</strong></div>
+    <div class="stat">Взято в обробку<strong>{{ result.totals.rows_used }}</strong></div>
+    <div class="stat">Видалено<strong>{{ result.totals.rows_deleted }}</strong></div>
+    <div class="stat">Кількість ППТ<strong>{{ result.totals.total_count }}</strong></div>
+    <div class="stat">Загальна сума<strong>{{ result.totals.total_sum|floatformat:2 }}</strong></div>
 </div>
 
-<table>
-    <thead>
-    <tr>
-        <th>Тип</th>
-        <th>Місяць</th>
-        <th>Кількість ППТ</th>
-        <th>Сума ППТ</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for row in result.summary %}
+{% for block in result.blocks %}
+    <h2>{{ block.title }}</h2>
+
+    <table>
+        <thead>
         <tr>
-            <td>{{ row.type }}</td>
-            <td>{{ row.month }}</td>
-            <td>{{ row.count_ppt }}</td>
-            <td>{{ row.total_sum }}</td>
+            <th>Тип / Відділ</th>
+
+            {% for month in result.months %}
+                <th>Місяць {{ month }} кіл</th>
+                <th>Місяць {{ month }} сума</th>
+            {% endfor %}
+
+            <th>Загалом кіл</th>
+            <th>Загалом сума</th>
         </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        </thead>
+
+        <tbody>
+        {% for row in block.rows %}
+            <tr>
+                <td>{{ row.label }}</td>
+
+                {% for month_data in row.months %}
+                    <td>{{ month_data.count }}</td>
+                    <td>{{ month_data.sum|floatformat:2 }}</td>
+                {% endfor %}
+
+                <td>{{ row.total_count }}</td>
+                <td>{{ row.total_sum|floatformat:2 }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
 
 <p style="margin-top: 24px;">
-    <a href="{% url 'upload_file' %}" class="button">Завантажити інший файл</a>
+    <a href="{% url 'upload_ppt_file' %}" class="button">Завантажити інший файл</a>
+    <a href="{% url 'index' %}" class="button secondary">На головну</a>
 </p>
 {% endblock %}

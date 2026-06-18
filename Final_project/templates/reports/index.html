@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Вибір обробки файлу</h1>
+
+<p>Оберіть тип звіту, для якого потрібно завантажити Excel-файл.</p>
+
+<div class="task-grid">
+    <a href="{% url 'upload_ppt_file' %}" class="task-card">
+        <span class="task-label">Звіт 1</span>
+        <strong>Не проведені ППТ за період</strong>
+        <small>Формування Base, Svod, Excel та PDF звіту.</small>
+    </a>
+
+    <a href="{% url 'upload_internet_orders_file' %}" class="task-card">
+        <span class="task-label">Звіт 2</span>
+        <strong>Ефективність обробки Інтернет замовлень</strong>
+        <small>Завантаження файлу та підготовка до аналізу замовлень.</small>
+    </a>
+</div>
+{% endblock %}

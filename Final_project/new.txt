@@ -1,0 +1,8 @@
+cd "шлях\до\Final_project"
+python -m venv .venv
+.\.venv\Scripts\activate
+pip install django pandas openpyxl
+python manage.py migrate
+python manage.py runserver
+
+На іншому ПК має бути встановлений Python. PyCharm не потрібен: сайт запускається звичайним PowerShell.

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+
+<p>{{ description }}</p>
+
+{% if error %}
+    <div class="error">{{ error }}</div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data" class="upload-panel">
+    {% csrf_token %}
+
+    <div>
+        {{ form.file.label_tag }}
+        {{ form.file }}
+    </div>
+
+    <div>
+        <button type="submit">Обробити файл</button>
+        <a href="{% url 'index' %}" class="button secondary">Назад</a>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Ефективність обробки Інтернет замовлень</h1>
+
+<p>Оброблено файл: <strong>{{ file_name }}</strong></p>
+
+<div class="stats">
+    <div class="stat">Вкладка<strong>{{ result.sheet_name }}</strong></div>
+    <div class="stat">Рядків<strong>{{ result.rows_total }}</strong></div>
+    <div class="stat">Колонок<strong>{{ result.columns_total }}</strong></div>
+</div>
+
+<h2>Колонки файлу</h2>
+
+<table>
+    <tbody>
+    {% for column in result.columns %}
+        <tr>
+            <td>{{ column }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<p style="margin-top: 24px;">
+    <a href="{% url 'upload_internet_orders_file' %}" class="button">Завантажити інший файл</a>
+    <a href="{% url 'index' %}" class="button secondary">На головну</a>
+</p>
+{% endblock %}
